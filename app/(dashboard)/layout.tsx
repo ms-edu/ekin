@@ -17,7 +17,7 @@ export default async function DashboardLayout({
 
   const { data: userProfile } = await supabase
     .from('users')
-    .select('nama, jabatan')
+    .select('nama, nip, jabatan')
     .eq('id', session.user.id)
     .single()
 
@@ -26,11 +26,17 @@ export default async function DashboardLayout({
       <TopBar 
         userEmail={session.user.email || ''} 
         userName={userProfile?.nama}
+        userNip={userProfile?.nip}
       />
       <main className="flex-1 pb-24 px-4 pt-4 max-w-2xl mx-auto w-full">
         {children}
       </main>
       <BottomNav />
+      <footer className="bg-white border-t border-slate-100 py-3 text-center fixed bottom-14 left-0 right-0 z-30">
+        <p className="text-xs text-slate-500">
+          &copy; 2026 Emes EduTech
+        </p>
+      </footer>
     </div>
   )
 }
