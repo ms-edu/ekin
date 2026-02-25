@@ -133,7 +133,7 @@ export default function LaporanPage() {
     <div className="animate-fade-in">
       <div className="mb-6">
         <h1 className="section-title text-xl">Cetak Laporan</h1>
-        <p className="text-xs text-slate-500 mt-0.5">Laporan Capaian Kinerja Harian & Bulanan</p>
+        <p className="text-xs text-slate-500 mt-0.5">Laporan Capaian Kinerja Harian &amp; Bulanan</p>
       </div>
 
       <div className="card p-5 mb-4">
