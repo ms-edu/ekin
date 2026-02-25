@@ -83,7 +83,7 @@ export default function LoginPage() {
         <div className="mb-8 text-center animate-slide-up">
           <div className="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 
                          flex items-center justify-center mx-auto mb-4 shadow-xl">
-            <BookOpen className="w-10 h-10 text-white" />
+            <img src="https://i.imgur.com/dYwR4Jp.png" alt="Emes EduTech" className="w-full h-full object-contain" />
           </div>
           <h1 className="font-display text-3xl font-bold text-white tracking-wide">E-Kinerja</h1>
           <p className="text-primary-200 text-sm mt-1">Laporan Kinerja Harian Guru</p>
