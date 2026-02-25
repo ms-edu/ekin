@@ -239,7 +239,8 @@ function buildLaporanHTML({ identitas, school, kelompok, rekapVolume, tanggalLap
 
   const css = [
     '*{box-sizing:border-box}',
-    'body{font-family:"Times New Roman",Times,serif;margin:0;padding:20px 40px;line-height:1.5;color:#000;font-size:12pt}',
+    '@page{size:legal portrait;margin:20mm 25mm 20mm 25mm}',
+    'body{font-family:\"Times New Roman\",Times,serif;margin:0;padding:0;line-height:1.5;color:#000;font-size:11pt}',
     'h1{text-align:center;font-size:14pt;font-weight:bold;margin:0 0 4px}',
     'h2{text-align:center;font-size:13pt;font-weight:bold;margin:0 0 20px}',
     '.info-table{width:100%;margin-bottom:20px;border-collapse:collapse}',
@@ -253,7 +254,7 @@ function buildLaporanHTML({ identitas, school, kelompok, rekapVolume, tanggalLap
     '.tanggal-col{width:110px}',
     '.center{text-align:center}',
     '.page-break{page-break-before:always;padding-top:20px}',
-    '@media print{body{padding:10px 20px}}',
+    '.pengesahan{page-break-inside:avoid;width:100%;border-collapse:collapse;margin-top:30px}',
   ].join('')
 
   const infoRows = (label: string, val: string) =>
@@ -307,33 +308,74 @@ function buildLaporanHTML({ identitas, school, kelompok, rekapVolume, tanggalLap
 }
 
 function buildPengesahan(identitas: any, school: any, tanggalLaporan: string) {
-  const ttdGuru = identitas?.tanda_tangan_url
-    ? '<img src="' + identitas.tanda_tangan_url + '" style="height:80px;max-width:200px;" alt="TTD" />'
-    : '<div style="height:80px;"></div>'
-
+  // TTD kepala sekolah
   const ttdKepala = school?.ttd_kepala_url
-    ? '<img src="' + school.ttd_kepala_url + '" style="height:80px;max-width:200px;" alt="TTD Kepala" />'
-    : '<div style="height:80px;"></div>'
+    ? '<img src="' + school.ttd_kepala_url + '" style="height:85px;max-width:220px;display:block;margin:0 auto;position:relative;z-index:1;" alt="TTD Kepala" />'
+    : '<div style="height:85px;"></div>'
 
+  // Stempel: diameter 4cm = ~151px (96dpi) / di print ~113px (72dpi screen)
+  // Posisi: menimpa 30% bagian KIRI ttd kepala
+  // Caranya: wrapper TTD+stempel menggunakan position:relative
+  // Stempel di left:0, center vertical, lebar stempel 151px
+  // TTD kepala di-shift ke kanan agar stempel menimpa 30% bagian kirinya
   const stempel = school?.stempel_url
-    ? '<img src="' + school.stempel_url + '" style="height:120px;width:auto;opacity:0.85;position:absolute;top:0;left:-10px;z-index:-1;" alt="Stempel" />'
+    ? '<img src="' + school.stempel_url + '"' +
+      ' style="position:absolute;width:151px;height:151px;object-fit:contain;opacity:0.88;' +
+      'top:50%;left:0;transform:translateY(-50%);z-index:2;" alt="Stempel" />'
     : ''
 
-  return '<table style="width:100%;margin-top:40px;">' +
+  // Jika ada stempel, geser ttd ke kanan 30% dari 151px = ~45px
+  const ttdKepalaWrap = school?.stempel_url
+    ? '<div style="position:relative;display:inline-block;margin-left:45px;">' + ttdKepala + '</div>'
+    : ttdKepala
+
+  const ttdGuru = identitas?.tanda_tangan_url
+    ? '<img src="' + identitas.tanda_tangan_url + '" style="height:85px;max-width:220px;display:block;margin:0 auto;" alt="TTD" />'
+    : '<div style="height:85px;"></div>'
+
+  const minH = 'min-height:155px'
+
+  return '<table class="pengesahan">' +
+    // Row 1: label "Atasan Langsung" | tanggal + "Pegawai yang Dinilai"
     '<tr>' +
-    '<td style="width:50%;text-align:center;vertical-align:top;padding:5px;">' +
-    '<div style="font-weight:bold;">Atasan Langsung</div>' +
-    '<div style="position:relative;min-height:100px;display:flex;align-items:center;justify-content:center;">' +
-    stempel + ttdKepala + '</div>' +
-    '<div style="font-weight:bold;">' + (school?.nama_kepala || 'Nama Kepala Sekolah') + '</div>' +
-    '<div>' + (school?.nip_kepala || 'NIP. -') + '</div>' +
+    '<td style="width:50%;text-align:center;padding:0 10px 6px;font-weight:bold;vertical-align:bottom;">' +
+      'Atasan Langsung' +
     '</td>' +
-    '<td style="width:50%;text-align:center;vertical-align:top;padding:5px;">' +
-    '<div>' + tanggalLaporan + '</div>' +
-    '<div style="font-weight:bold;margin-bottom:5px;">Pegawai yang Dinilai,</div>' +
-    '<div style="min-height:100px;display:flex;align-items:center;justify-content:center;">' + ttdGuru + '</div>' +
-    '<div style="font-weight:bold;">' + (identitas?.nama || '-') + '</div>' +
-    '<div>NIP. ' + (identitas?.nip || '-') + '</div>' +
+    '<td style="width:50%;text-align:center;padding:0 10px 6px;vertical-align:bottom;">' +
+      '<div>' + tanggalLaporan + '</div>' +
+      '<div style="font-weight:bold;">Pegawai yang Dinilai,</div>' +
     '</td>' +
-    '</tr></table>'
+    '</tr>' +
+    // Row 2: area TTD (stempel+ttdkepala) | ttd guru — tinggi sama
+    '<tr>' +
+    '<td style="width:50%;text-align:center;padding:4px 10px;vertical-align:middle;">' +
+      '<div style="position:relative;' + minH + ';display:flex;align-items:center;justify-content:center;">' +
+        stempel + ttdKepalaWrap +
+      '</div>' +
+    '</td>' +
+    '<td style="width:50%;text-align:center;padding:4px 10px;vertical-align:middle;">' +
+      '<div style="' + minH + ';display:flex;align-items:center;justify-content:center;">' +
+        ttdGuru +
+      '</div>' +
+    '</td>' +
+    '</tr>' +
+    // Row 3: Nama kepala | Nama guru (sejajar)
+    '<tr>' +
+    '<td style="width:50%;text-align:center;padding:4px 10px 2px;font-weight:bold;">' +
+      (school?.nama_kepala || 'Nama Kepala Sekolah') +
+    '</td>' +
+    '<td style="width:50%;text-align:center;padding:4px 10px 2px;font-weight:bold;">' +
+      (identitas?.nama || '-') +
+    '</td>' +
+    '</tr>' +
+    // Row 4: NIP kepala | NIP guru (sejajar)
+    '<tr>' +
+    '<td style="width:50%;text-align:center;padding:0 10px 10px;">' +
+      (school?.nip_kepala || 'NIP. -') +
+    '</td>' +
+    '<td style="width:50%;text-align:center;padding:0 10px 10px;">' +
+      'NIP. ' + (identitas?.nip || '-') +
+    '</td>' +
+    '</tr>' +
+    '</table>'
 }
