@@ -54,7 +54,8 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${poppins.variable} ${playfair.variable} ${jetbrains.variable}`}>
       <head>
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <link rel="icon" type="image/png" href="https://i.imgur.com/dYwR4Jp.png" />
+        <link rel="apple-touch-icon" href="https://i.imgur.com/dYwR4Jp.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
