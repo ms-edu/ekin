@@ -2,15 +2,16 @@
 
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
-import { LogOut } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface TopBarProps {
   userEmail: string
   userName?: string
+  userNip?: string
 }
 
-export default function TopBar({ userEmail, userName }: TopBarProps) {
+export default function TopBar({ userEmail, userName, userNip }: TopBarProps) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -23,7 +24,7 @@ export default function TopBar({ userEmail, userName }: TopBarProps) {
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
-      <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -35,19 +36,34 @@ export default function TopBar({ userEmail, userName }: TopBarProps) {
           </div>
           <div>
             <span className="font-display font-bold text-primary-700 text-base leading-none">E-Kinerja</span>
-            <p className="text-xs text-slate-400 leading-none mt-0.5 truncate max-w-[160px]">
-              {userName || userEmail}
-            </p>
           </div>
         </div>
         
-        <button
-          onClick={handleLogout}
-          className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-red-500 transition-all active:scale-95"
-          title="Keluar"
-        >
-          <LogOut className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+              <User className="w-5 h-5 text-primary-700" />
+            </div>
+            <div className="flex flex-col items-start min-w-0">
+              <span className="text-sm font-semibold text-slate-700 leading-tight truncate max-w-[120px]">
+                {userName || userEmail}
+              </span>
+              {userNip && (
+                <span className="text-xs text-slate-500 leading-tight">
+                  NIP: {userNip}
+                </span>
+              )}
+            </div>
+          </div>
+          
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-red-500 transition-all active:scale-95"
+            title="Keluar"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </header>
   )
