@@ -220,7 +220,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-primary-300/60 text-xs mt-8">
-          © {new Date().getFullYear()} E-Kinerja Guru
+         E-Kinerja Guru © {new Date().getFullYear()} Emes EduTech. All rights reserved.
         </p>
       </div>
     </div>
