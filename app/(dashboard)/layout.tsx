@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { createServerClient } from '@/lib/supabase'
+import { createServerClient } from '@/lib/supabase-server'
 import BottomNav from '@/components/BottomNav'
 import TopBar from '@/components/TopBar'
 
@@ -15,7 +15,6 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  // Get user profile
   const { data: userProfile } = await supabase
     .from('users')
     .select('nama, jabatan')
@@ -28,11 +27,9 @@ export default async function DashboardLayout({
         userEmail={session.user.email || ''} 
         userName={userProfile?.nama}
       />
-      
       <main className="flex-1 pb-24 px-4 pt-4 max-w-2xl mx-auto w-full">
         {children}
       </main>
-      
       <BottomNav />
     </div>
   )
