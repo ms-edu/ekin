@@ -1,7 +1,7 @@
 {
   "name": "E-Kinerja Guru",
   "short_name": "E-Kinerja",
-  "description": "Aplikasi Laporan Kinerja Harian Guru",
+  "description": "Aplikasi Laporan Kinerja Harian Guru — Emes EduTech",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0369a1",
@@ -9,18 +9,17 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "https://i.imgur.com/dYwR4Jp.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "https://i.imgur.com/dYwR4Jp.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["education", "productivity"],
-  "screenshots": []
+  "categories": ["education", "productivity"]
 }
