@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
-import { BookOpen, LogOut } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface TopBarProps {
@@ -25,8 +25,13 @@ export default function TopBar({ userEmail, userName }: TopBarProps) {
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
       <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center shadow-sm">
-            <BookOpen className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://i.imgur.com/dYwR4Jp.png"
+              alt="Emes EduTech"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div>
             <span className="font-display font-bold text-primary-700 text-base leading-none">E-Kinerja</span>
